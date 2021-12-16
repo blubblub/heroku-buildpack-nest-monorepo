@@ -20,6 +20,7 @@ Enter the Monorepo buildpack, which is a copy of [heroku-buildpack-multi-procfil
  buildpack is defined first. You can do this by adding `-i 1` to the `heroku buildpacks:add` command.**
 - The buildpack works only on Linux and it depends on `jq` being installed (by default already on Heroku-20 stack)
 - It works by updating package.json and appending your NestJS app to commands. Currently it only updates `build`, `start` and `start:prod` commands.
+- If you change the environment variable `NEST_APP`, you will have to redeploy, as Heroku does not run buildpack in this case.
 
 # Author
 
