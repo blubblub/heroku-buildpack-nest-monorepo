@@ -7,14 +7,20 @@ if [ ! -f "${BUILD_DIR}/nest-cli.json" ]; then
     exit 1
 fi
 
-
 if [ ! -d "${BUILD_DIR}/apps" ]; then
     echo "NestJS Monorepo not detected. Ensure NestJS is set to monorepo mode and apps directory exists. Aborting." | indent
     exit 1
 fi
 
+if [ ! -f "${ENV_DIR}/NEST_APP" ]; then
+    echo "NEST_APP was not set. Aborting" | indent
+    exit 1
+fi
+
+NEST_APP="$(cat "${ENV_DIR}/NEST_APP")"
+
 if [ ! -d "${BUILD_DIR}/apps/${NEST_APP}" ]; then
-    echo "NEST_APP was not set: ${NEST_APP}. Ensure NestJS app is in apps directory. Aborting. " | indent
+    echo "NEST_APP does not exist: ${NEST_APP}. Ensure NestJS app is in apps directory. Aborting." | indent
     exit 1
 fi
 
