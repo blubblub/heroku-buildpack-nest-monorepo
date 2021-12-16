@@ -12,16 +12,15 @@ CACHE_DIR="$2"
 ENV_DIR="$3"
 STAGE="$(mktemp -d)"
 
-if [ ! -f "${ENV_DIR}/APP_BASE" ]; then
-    echo "APP_BASE was not set. Aborting" | indent
+if [ ! -f "${ENV_DIR}/apps/NEST_APP" ]; then
+    echo "NEST_APP was not set. Aborting. Ensure NestJS app is in apps directory." | indent
     exit 1
 fi
-APP_BASE="$(cat "${ENV_DIR}/APP_BASE")"
+
+NEST_APP_DIR="$(cat "${ENV_DIR}/apps/NEST_APP")"
 
 (
-    mv "${BUILD_DIR}/${APP_BASE}" "${STAGE}" &&
-    rm -rf "${BUILD_DIR}"/* &&
-    mv "${STAGE}/$(basename "$APP_BASE")"/* "${BUILD_DIR}"
+    cp -r "${BUILD_DIR}/${NEST_APP_DIR}" "${BUILD_DIR}/src"
 )
 
 if [ $? -ne 0 ]; then
@@ -29,5 +28,5 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Copied ${APP_BASE} to root of app successfully" | indent
+echo "Set up ${NEST_APP} at the root of Heroku app successfully" | indent
 
