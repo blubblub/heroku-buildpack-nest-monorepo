@@ -41,7 +41,7 @@ echo 'Patching package.json...'
 for ((i = 0; i < ${#SCRIPTS[@]}; i++))
 do
   SCRIPT="${SCRIPTS[$i]}"
-  echo "Patch jq command: '$SCRIPT'"
+  echo "Patch jq command: '$SCRIPT'" | indent
   CMD="jq '$SCRIPT' ${BUILD_DIR}/package.json > ${BUILD_DIR}/tmp.$$.json && mv ${BUILD_DIR}/tmp.$$.json package.json"
   #echo $CMD
   eval "$CMD"
@@ -49,5 +49,5 @@ done
 
 echo "Updated build, start and start:prod scripts in package.json with: $NEST_APP"
 
-echo "Set up ${NEST_APP} at the root of Heroku app successfully" | indent
+echo "Set up ${NEST_APP} to be started from package.json" | indent
 
