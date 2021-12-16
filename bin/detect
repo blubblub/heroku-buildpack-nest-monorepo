@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
 
-echo "Monorepo"
+BUILD_DIR="$1"
+
+if [ ! -f "${BUILD_DIR}/nest-cli.json" ]; then
+    echo "Nest CLI was not detected. Aborting." | indent
+    exit 1
+fi
+
+
+if [ ! -d "${BUILD_DIR}/apps" ]; then
+    echo "NEST_APP was not set: ${NEST_APP}. Ensure NestJS is set to monorepo mode and apps directory exists. Aborting." | indent
+    exit 1
+fi
+
+if [ ! -d "${ENV_DIR}/apps/NEST_APP" ]; then
+    echo "NEST_APP was not set: ${NEST_APP}. Ensure NestJS app is in apps directory. Aborting. " | indent
+    exit 1
+fi
+
+echo "NestJS Monorepo"
 exit 0
