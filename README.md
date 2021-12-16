@@ -1,21 +1,26 @@
-# Heroku Monorepo Buildpack
+#  NestJS Monorepo Heroku Buildpack
 
-Imagine you have a single code base, which has a few different applications within it... or at least the ability to run a few different applications. Or, maybe you're Google with your mono repo?
+You have a single codebase with multiple NestJS apps as defined in: https://docs.nestjs.com/cli/monorepo
 
-In any case, how do you manage this on Heroku? You don't. Heroku applications assume one repo to one application.
+How do you run each on Heroku? You don't. Heroku applications assume one repo to one application.
 
 Enter the Monorepo buildpack, which is a copy of [heroku-buildpack-multi-procfile](https://github.com/heroku/heroku-buildpack-multi-procfile) except it moves the target path in to the root, rather than just the Procfile. This helps for ruby apps etc.
 
 # Usage
 
-1. Write a bunch of ~~Procfiles~~ apps and scatter them through out your code base.
+1. Write a single `Procfile` and enter your command: `web: npm run start:prod`
 2. Create a bunch of Heroku apps.
-3. For each app, set `APP_BASE=relative/path/to/app/root`, and of course:
-   `heroku buildpacks:add -a <app> https://github.com/lstoll/heroku-buildpack-monorepo`
-4. For each app, `git push git@heroku.com:<app> master`
+3. For each app set `NEST_APP=app name`
+4. For each app run `heroku buildpacks:add -a <app> https://github.com/blubblub/heroku-buildpack-nest-monorepo`
+4. For each app `git push git@heroku.com:<app> main`
 
-Note: If you already have other buildpacks defined, you'll need to make sure that the heroku-buildpack-monorepo buildpack is defined first. You can do this by adding `-i 1` to the `heroku buildpacks:add` command.
+# Notes
 
-# Authors
+- **If you already have other buildpacks defined, you'll need to make sure that the heroku-buildpack-nest-monorepo
+ buildpack is defined first. You can do this by adding `-i 1` to the `heroku buildpacks:add` command.**
+- The buildpack works only on Linux and it depends on `jq` being installed (by default already on Heroku-20 stack)
+- It works by updating package.json and appending your NestJS app to commands. Currently it only updates `build`, `start` and `start:prod` commands.
 
-Andrew Gwozdziewycz <apg@heroku.com> and Cyril David <cyx@heroku.com> and now Lincoln Stoll <lstoll@heroku.com>
+# Author
+
+Dal Rupnik <legoless@gmail.com>
