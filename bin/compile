@@ -3,6 +3,9 @@
 # Ensure wildcards in globs match dotfiles too.
 shopt -s dotglob
 
+# Install jq, we need it to patch files
+apt install jq
+
 indent() {
     sed -u 's/^/      /'
 }
