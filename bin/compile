@@ -12,7 +12,7 @@ CACHE_DIR="$2"
 ENV_DIR="$3"
 STAGE="$(mktemp -d)"
 
-if [ ! -f "${ENV_DIR}/apps/NEST_APP" ]; then
+if [ ! -d "${ENV_DIR}/apps/NEST_APP" ]; then
     echo "NEST_APP was not set: ${NEST_APP}. Aborting. Ensure NestJS app is in apps directory." | indent
     exit 1
 fi
