@@ -3,9 +3,6 @@
 # Ensure wildcards in globs match dotfiles too.
 shopt -s dotglob
 
-# Install jq, we need it to patch files
-apt install jq
-
 indent() {
     sed -u 's/^/      /'
 }
@@ -45,7 +42,7 @@ for ((i = 0; i < ${#SCRIPTS[@]}; i++))
 do
   SCRIPT="${SCRIPTS[$i]}"
   echo "Patch jq command: '$SCRIPT'"
-  CMD="jq '$SCRIPT' package.json > tmp.$$.json && mv tmp.$$.json package.json"
+  CMD="jq '$SCRIPT' ${BUILD_DIR}/package.json > ${BUILD_DIR}/tmp.$$.json && mv ${BUILD_DIR}/tmp.$$.json package.json"
   #echo $CMD
   eval "$CMD"
 done
