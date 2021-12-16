@@ -42,7 +42,7 @@ for ((i = 0; i < ${#SCRIPTS[@]}; i++))
 do
   SCRIPT="${SCRIPTS[$i]}"
   echo "Patch jq command: '$SCRIPT'" | indent
-  CMD="jq '$SCRIPT' ${BUILD_DIR}/package.json > ${BUILD_DIR}/tmp.$$.json && mv ${BUILD_DIR}/tmp.$$.json package.json"
+  CMD="jq '$SCRIPT' ${BUILD_DIR}/package.json > ${BUILD_DIR}/tmp.$$.json && mv ${BUILD_DIR}/tmp.$$.json ${BUILD_DIR}/package.json"
   #echo $CMD
   eval "$CMD"
 done
