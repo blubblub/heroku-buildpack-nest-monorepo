@@ -12,12 +12,18 @@ CACHE_DIR="$2"
 ENV_DIR="$3"
 STAGE="$(mktemp -d)"
 
-if [ ! -d "${ENV_DIR}/apps/NEST_APP" ]; then
-    echo "NEST_APP was not set: ${NEST_APP}. Aborting. Ensure NestJS app is in apps directory." | indent
+if [ ! -f "${ENV_DIR}/NEST_APP" ]; then
+    echo "NEST_APP was not set. Aborting" | indent
     exit 1
 fi
 
-NEST_APP_DIR="$(cat "${ENV_DIR}/apps/NEST_APP")"
+NEST_APP="$(cat "${ENV_DIR}/NEST_APP")"
+NEST_APP_DIR="apps/${NEST_APP}"
+
+if [ ! -d "${BUILD_DIR}/${NEST_APP_DIR}" ]; then
+    echo "NEST_APP does not exist: ${NEST_APP}. Ensure NestJS app is in apps directory. Aborting." | indent
+    exit 1
+fi
 
 (
     cp -r "${BUILD_DIR}/${NEST_APP_DIR}" "${BUILD_DIR}/"
