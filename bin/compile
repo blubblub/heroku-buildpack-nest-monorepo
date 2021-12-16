@@ -25,14 +25,29 @@ if [ ! -d "${BUILD_DIR}/${NEST_APP_DIR}" ]; then
     exit 1
 fi
 
-(
-    cp -r "${BUILD_DIR}/${NEST_APP_DIR}" "${BUILD_DIR}/"
-)
-
-if [ $? -ne 0 ]; then
-    echo "FAILED to copy directory into place" | indent
+if [ ! -f "${BUILD_DIR}/package.json" ]; then
+    echo "package.json does not exist: ${NEST_APP}. Ensure it is in root directory. Aborting." | indent
     exit 1
 fi
+
+declare -a SCRIPTS=(
+  ".scripts.build = \"nest build $NEST_APP\""
+  ".scripts.start = \"nest start $NEST_APP\""
+  ".scripts.\"start:prod\" = \"node dist/apps/$NEST_APP/main\""
+)
+
+echo 'Patching package.json...'
+
+for ((i = 0; i < ${#SCRIPTS[@]}; i++))
+do
+  SCRIPT="${SCRIPTS[$i]}"
+  echo "Patch jq command: '$SCRIPT'"
+  CMD="jq '$SCRIPT' package.json > tmp.$$.json && mv tmp.$$.json package.json"
+  #echo $CMD
+  eval "$CMD"
+done
+
+echo "Updated build, start and start:prod scripts in package.json with: $NEST_APP"
 
 echo "Set up ${NEST_APP} at the root of Heroku app successfully" | indent
 
