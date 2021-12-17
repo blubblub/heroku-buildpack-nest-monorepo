@@ -4,7 +4,7 @@ You have a single codebase with multiple NestJS apps as defined in: https://docs
 
 How do you run each on Heroku? You don't. Heroku applications assume one repo to one application.
 
-Enter the Monorepo buildpack, which is a copy of [heroku-buildpack-multi-procfile](https://github.com/heroku/heroku-buildpack-multi-procfile) except it moves the target path in to the root, rather than just the Procfile. This helps for ruby apps etc.
+Enter the NestJS Monorepo buildpack, which updates package.json in the root of your NestJS project by adding the defined app to the `scripts`.
 
 # Usage
 
